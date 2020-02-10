@@ -1,0 +1,29 @@
+{
+  "name": "hsluv-ts",
+  "version": "0.1.0",
+  "description": "A reimplementation of hsluv in typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StoneCypher/hsluv-ts.git"
+  },
+  "keywords": [
+    "hsl",
+    "husl",
+    "hsluv",
+    "typescript"
+  ],
+  "author": "John Haugeland <stonecypher@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StoneCypher/hsluv-ts/issues"
+  },
+  "homepage": "https://github.com/StoneCypher/hsluv-ts#readme",
+  "devDependencies": {
+    "rollup": "^1.31.0",
+    "typescript": "^3.7.5"
+  }
+}
