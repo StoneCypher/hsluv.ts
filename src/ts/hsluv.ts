@@ -772,5 +772,38 @@ const hex_to_hpluv = (s: string): number[] =>
 
 
 export {
-  l_to_y, y_to_l
+
+  rgb_to_hsluv,
+  rgb_to_hpluv,
+
+  hsluv_to_rgb,
+  hpluv_to_rgb,
+
+  hex_to_hsluv,
+  hex_to_hpluv,
+
+  hsluv_to_hex,
+  hpluv_to_hex,
+
+  lch_to_hsluv,
+  lch_to_hpluv,
+
+  hsluv_to_lch,
+  hpluv_to_lch,
+
+  rgb_to_xyz,
+  xyz_to_rgb,
+
+  rgb_to_lch,
+  lch_to_rgb,
+
+  luv_to_xyz,
+  xyz_to_luv,
+
+  luv_to_lch,
+  lch_to_luv,
+
+  l_to_y,
+  y_to_l
+
 };
