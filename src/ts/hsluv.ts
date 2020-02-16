@@ -46,7 +46,7 @@
  *
  * Source: https://en.wikipedia.org/wiki/Double-precision_floating-point_format
  *
- */
+ **/
 
 import { line, angle } from './types';
 
@@ -60,23 +60,31 @@ import {
 
 
 const m = [
-  [3.240969941904521, -1.537383177570093, -0.498610760293],
-  [-0.96924363628087,  1.87596750150772,   0.041555057407175],
-  [0.055630079696993, -0.20397695888897,   1.056971514242878]
+
+  [  3.240969941904521, -1.537383177570093, -0.498610760293    ],
+  [ -0.96924363628087,   1.87596750150772,   0.041555057407175 ],
+  [ 0.055630079696993,  -0.20397695888897,   1.056971514242878 ]
+
 ];
 
+
 const minv = [
-  [0.41239079926595,  0.35758433938387, 0.18048078840183],
-  [0.21263900587151,  0.71516867876775, 0.072192315360733],
-  [0.019330818715591, 0.11919477979462, 0.95053215224966]
+
+  [ 0.41239079926595,  0.35758433938387, 0.18048078840183 ],
+  [ 0.21263900587151,  0.71516867876775, 0.072192315360733 ],
+  [ 0.019330818715591, 0.11919477979462, 0.95053215224966  ]
+
 ];
+
 
 const refY : number = 1.0,
       refU : number = 0.19783000664283,
       refV : number = 0.46831999493879;
 
+
 const kappa   : number = 903.2962962,   // CIE LUV constants
       epsilon : number = 0.0088564516;
+
 
 const hexChars : String = "0123456789abcdef";
 
@@ -90,7 +98,7 @@ const hexChars : String = "0123456789abcdef";
  * form that represent the bounds in CIELUV, stepping over which will
  * push a value out of the RGB gamut
  *
- */
+ **/
 
 const get_bounds = (L: number): line[] => {
 
@@ -127,11 +135,14 @@ const get_bounds = (L: number): line[] => {
 
 
 
-/**
-For given lightness, returns the maximum chroma. Keeping the chroma value
-below this number will ensure that for any hue, the color is within the RGB
-gamut.
-*/
+/*********
+ *
+ * For given lightness, returns the maximum chroma. Keeping the chroma value
+ * below this number will ensure that for any hue, the color is within the RGB
+ * gamut.
+ *
+ **/
+
 const max_safe_chroma_for_l = (L: number): number => {
 
   const bounds : line[] = get_bounds(L);
@@ -197,11 +208,14 @@ const to_linear = (c: number): number =>
 
 
 
-/**
-* XYZ coordinates are ranging in [0;1] and RGB coordinates in [0;1] range.
-* @param tuple An array containing the color's X,Y and Z values.
-* @return An array containing the resulting color's red, green and blue.
-**/
+/*********
+ *
+ * XYZ coordinates are ranging in [0;1] and RGB coordinates in [0;1] range.
+ *
+ * @param tuple An array containing the color's X,Y and Z values.
+ * @return An array containing the resulting color's red, green and blue.
+ *
+ **/
 
 const xyz_to_rgb = (tuple: number[]): number[] =>
 
@@ -215,11 +229,14 @@ const xyz_to_rgb = (tuple: number[]): number[] =>
 
 
 
-/**
-* RGB coordinates are ranging in [0;1] and XYZ coordinates in [0;1].
-* @param tuple An array containing the color's R,G,B values.
-* @return An array containing the resulting color's XYZ coordinates.
-**/
+/*********
+ *
+ * RGB coordinates are ranging in [0;1] and XYZ coordinates in [0;1].
+ *
+ * @param tuple An array containing the color's R,G,B values.
+ * @return An array containing the resulting color's XYZ coordinates.
+ *
+ **/
 
 const rgb_to_xyz = (tuple: number[]): number[] => {
 
@@ -241,12 +258,15 @@ const rgb_to_xyz = (tuple: number[]): number[] => {
 
 
 
-/*
-http://en.wikipedia.org/wiki/CIELUV
-In these formulas, Yn refers to the reference white point. We are using
-illuminant D65, so Yn (see refY in Maxima file) equals 1. The formula is
-simplified accordingly.
-*/
+/*********
+ *
+ * http://en.wikipedia.org/wiki/CIELUV
+ *
+ * In these formulas, Yn refers to the reference white point. We are using
+ * illuminant D65, so Yn (see refY in Maxima file) equals 1. The formula is
+ * simplified accordingly.
+ *
+ **/
 
 const y_to_l = (Y: number): number =>
 
@@ -267,11 +287,14 @@ const l_to_y = (L: number): number =>
 
 
 
-/**
-* XYZ coordinates are ranging in [0;1].
-* @param tuple An array containing the color's X,Y,Z values.
-* @return An array containing the resulting color's LUV coordinates.
-**/
+/*********
+ *
+ * XYZ coordinates are ranging in [0;1].
+ *
+ * @param tuple An array containing the color's X,Y,Z values.
+ * @return An array containing the resulting color's LUV coordinates.
+ *
+ **/
 
 const xyz_to_luv = (tuple: number[]): number[] => {
 
@@ -587,7 +610,7 @@ const hex_to_rgb = (hex: string): number[] => {
 
 
 
-/**
+/*********
  *
  * RGB values are ranging in [0;1].
  *
@@ -597,110 +620,149 @@ const hex_to_rgb = (hex: string): number[] => {
  **/
 
 const lch_to_rgb = (tuple: number[]): number[] =>
+
   xyz_to_rgb(luv_to_xyz(lch_to_luv(tuple)));
 
 
 
 
 
-/**
-* RGB values are ranging in [0;1].
-* @param tuple An array containing the color's RGB values.
-* @return An array containing the resulting color's LCH coordinates.
-**/
+/*********
+ *
+ * RGB values are ranging in [0;1].
+ *
+ * @param tuple An array containing the color's RGB values.
+ * @return An array containing the resulting color's LCH coordinates.
+ *
+ **/
 
 const rgb_to_lch = (tuple: number[]): number[] =>
+
   luv_to_lch(xyz_to_luv(rgb_to_xyz(tuple)));
 
 
 
 
 
-// RGB <--> HPLuv
-
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's HSL values in HSLuv color space.
-* @return An array containing the resulting color's RGB coordinates.
-**/
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's HSL values in HSLuv color space.
+ * @return An array containing the resulting color's RGB coordinates.
+ *
+ **/
 
 const hsluv_to_rgb = (tuple: number[]): number[] =>
+
   lch_to_rgb(hsluv_to_lch(tuple));
 
 
 
 
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's RGB coordinates.
-* @return An array containing the resulting color's HSL coordinates in HSLuv color space.
-**/
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's RGB coordinates.
+ * @return An array containing the resulting color's HSL coordinates in HSLuv color space.
+ *
+ **/
 
 const rgb_to_hsluv = (tuple: number[]): number[] =>
+
   lch_to_hsluv(rgb_to_lch(tuple));
 
 
 
 
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's HSL values in HPLuv (pastel variant) color space.
-* @return An array containing the resulting color's RGB coordinates.
-**/
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's HSL values in HPLuv (pastel variant) color space.
+ * @return An array containing the resulting color's RGB coordinates.
+ *
+ **/
 
 const hpluv_to_rgb = (tuple: number[]): number[] =>
+
   lch_to_rgb(hpluv_to_lch(tuple));
 
 
 
 
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's RGB coordinates.
-* @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
-**/
-@:keep
-public static function rgb_to_hpluv(tuple: number[]): number[] {
-  return lch_to_hpluv(rgb_to_lch(tuple));
-}
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's RGB coordinates.
+ * @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
+ *
+ **/
 
-// Hex
+const rgb_to_hpluv = (tuple: number[]): number[] =>
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's HSL values in HSLuv color space.
-* @return A string containing a `#RRGGBB` representation of given color.
-**/
-@:keep
-public static function hsluv_to_hex(tuple: number[]):String {
-  return rgb_to_hex(hpluv_to_rgb(tuple));
-}
+  lch_to_hpluv(rgb_to_lch(tuple));
 
-@:keep
-public static function hpluv_to_hex(tuple: number[]):String {
-  return rgb_to_hex(hpluv_to_rgb(tuple));
-}
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param tuple An array containing the color's HSL values in HPLuv (pastel variant) color space.
-* @return An array containing the color's HSL values in HSLuv color space.
-**/
-@:keep
-public static function hex_to_hsluv(s:String): number[] {
-  return rgb_to_hsluv(hex_to_rgb(s));
-}
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
-* @param hex A `#RRGGBB` representation of a color.
-* @return An array containing the color's HSL values in HPLuv (pastel variant) color space.
-**/
-@:keep
-public static function hex_to_hpluv(s:String): number[] {
-  return rgb_to_hpluv(hex_to_rgb(s));
-}
 
+
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's HSL values in HSLuv color space.
+ * @return A string containing a `#RRGGBB` representation of given color.
+ *
+ **/
+
+const hsluv_to_hex = (tuple: number[]): string =>
+
+  rgb_to_hex(hpluv_to_rgb(tuple));
+
+
+
+
+
+const hpluv_to_hex = (tuple: number[]): string =>
+
+  rgb_to_hex(hpluv_to_rgb(tuple));
+
+
+
+
+
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param tuple An array containing the color's HSL values in HPLuv (pastel variant) color space.
+ * @return An array containing the color's HSL values in HSLuv color space.
+ *
+ **/
+
+const hex_to_hsluv = (s: string): number[] =>
+
+  rgb_to_hsluv(hex_to_rgb(s));
+
+
+
+
+
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
+ *
+ * @param hex A `#RRGGBB` representation of a color.
+ * @return An array containing the color's HSL values in HPLuv (pastel variant) color space.
+ *
+ **/
+
+const hex_to_hpluv = (s: string): number[] =>
+
+  rgb_to_hpluv(hex_to_rgb(s));
