@@ -1,24 +1,49 @@
 
-/**
-Human-friendly HSL conversion utility class.
+// A typescript conversion of https://github.com/hsluv/hsluv/
+// Generally the same code, but some names changed, and the packaging replaced
+// s/haxe/typescript/g
 
-The math for most of this module was taken from:
+// TODO search for Float, integer, array, public, static, keep
+// TODO a lot of these `number[]`s can be replaced with `xyz` or `hsl` or etc
+// TODO update all doc text to typescript, markdown
+// TODO == to ===
+// TODO code simplification passes
 
- * http://www.easyrgb.com
- * http://www.brucelindbloom.com
- * Wikipedia
 
-All numbers below taken from math/bounds.wxm wxMaxima file. We use 17
-digits of decimal precision to export the numbers, effectively exporting
-them as double precision IEEE 754 floats.
 
-"If an IEEE 754 double precision is converted to a decimal string with at
-least 17 significant digits and then converted back to double, then the
-final number must match the original"
 
-Source: https://en.wikipedia.org/wiki/Double-precision_floating-point_format
-=======
-*/
+
+/*********
+ *
+ *  # hsluv.ts
+ *
+ *  `Human-friendly HSL` conversion utility class
+ *
+ * A typescript conversion of https://github.com/hsluv/hsluv/
+ *
+ * Generally the same code, but some names changed, and the packaging replaced
+ *
+ * `s/haxe/typescript/g`
+ *
+ * ----
+ *
+ * The math for most of this module was taken from:
+ *
+ * * http://www.easyrgb.com
+ * * http://www.brucelindbloom.com
+ * * Wikipedia
+ *
+ * All numbers below taken from math/bounds.wxm wxMaxima file. We use 17
+ * digits of decimal precision to export the numbers, effectively exporting
+ * them as double precision IEEE 754 floats.
+ *
+ * "If an IEEE 754 double precision is converted to a decimal string with at
+ * least 17 significant digits and then converted back to double, then the
+ * final number must match the original"
+ *
+ * Source: https://en.wikipedia.org/wiki/Double-precision_floating-point_format
+ *
+ */
 
 import { line, angle } from './types';
 
@@ -56,11 +81,14 @@ const hexChars : String = "0123456789abcdef";
 
 
 
-/**
-For a given lightness, return a list of 6 lines in slope-intercept
-form that represent the bounds in CIELUV, stepping over which will
-push a value out of the RGB gamut
-*/
+/*********
+ *
+ * For a given lightness, return a list of 6 lines in slope-intercept
+ * form that represent the bounds in CIELUV, stepping over which will
+ * push a value out of the RGB gamut
+ *
+ */
+
 const get_bounds = (L: number): line[] => {
 
   let result: line[] = [];
@@ -142,7 +170,7 @@ const max_chroma_for_lh = (L: number, H: number) => {
 
 const dot_product = (a: number[], b: number[]): number =>
 
-  a.reduce( (acc, cur, i) => acc += cur * b[curi], 0 );
+  a.reduce( (acc, cur, i) => acc += (cur * b[i]), 0 );
 
 
 
@@ -225,7 +253,7 @@ const y_to_l = (Y: number): number =>
     : ( 116 * Math.pow(Y / refY, 1.0 / 3.0) - 16 );
 
 
-const l_to_y(L: number): number =>
+const l_to_y = (L: number): number =>
 
   (L <= 8)
 
@@ -251,10 +279,10 @@ const xyz_to_luv = (tuple: number[]): number[] => {
   // This divider fix avoids a crash on Python (divide by zero except.)
   // TODO FIXME this nan handling is nonsense
   let divider : number = (X + (15 * Y) + (3 * Z)),
-      varU    : number = (divider == 0)? Math.NaN : ((4 * X) / divider),
-      varV    : number = (divider == 0)? Math.NaN : ((9 * Y) / divider);
+      varU    : number = (divider === 0)? NaN : ((4 * X) / divider),
+      varV    : number = (divider === 0)? NaN : ((9 * Y) / divider);
 
-  var L: number = y_to_l(Y);
+  const L: number = y_to_l(Y);
 
   if (L === 0) { return [0, 0, 0]; }
 
@@ -269,132 +297,172 @@ const xyz_to_luv = (tuple: number[]): number[] => {
 
 
 
-/**
-* XYZ coordinates are ranging in [0;1].
-* @param tuple An array containing the color's L,U,V values.
-* @return An array containing the resulting color's XYZ coordinates.
-**/
-public static function luvToXyz(tuple:Array<Float>):Array<Float> {
-  var L:Float = tuple[0];
-  var U:Float = tuple[1];
-  var V:Float = tuple[2];
+/*********
+ *
+ * XYZ coordinates are ranging in `[0;1]`.
+ *
+ * @param tuple An array containing the color's L,U,V values.
+ * @return An array containing the resulting color's XYZ coordinates.
+ *
+ **/
 
+const luv_to_xyz = (tuple: number[]): number[] => {
+
+  // TODO FIXME these could be pattern matches
+  const L: number = tuple[0];
+  const U: number = tuple[1];
+  const V: number = tuple[2];
+
+  // TODO FIXME there's no reason for this to wait until after the other two assignments
   if (L == 0) {
       return [0, 0, 0];
   }
 
-  var varU:Float = U / (13 * L) + refU;
-  var varV:Float = V / (13 * L) + refV;
+  const varU: number = U / (13 * L) + refU;
+  const varV: number = V / (13 * L) + refV;
 
-  var Y:Float = lToY(L);
-  var X:Float = 0 - (9 * Y * varU) / ((varU - 4) * varV - varU * varV);
-  var Z:Float = (9 * Y - (15 * varV * Y) - (varV * X)) / (3 * varV);
+  const Y: number = l_to_y(L);
+  const X: number = 0 - (9 * Y * varU) / ((varU - 4) * varV - varU * varV);
+  const Z: number = (9 * Y - (15 * varV * Y) - (varV * X)) / (3 * varV);
 
   return [X, Y, Z];
 }
 
-/**
-* @param tuple An array containing the color's L,U,V values.
-* @return An array containing the resulting color's LCH coordinates.
-**/
-public static function luvToLch(tuple:Array<Float>):Array<Float> {
-  var L:Float = tuple[0];
-  var U:Float = tuple[1];
-  var V:Float = tuple[2];
 
-  var C:Float = Math.sqrt(U * U + V * V);
-  var H:Float;
+
+
+
+/*********
+ *
+ * @param tuple An array containing the color's L,U,V values.
+ * @return An array containing the resulting color's LCH coordinates.
+ *
+ **/
+
+const luv_to_lch = (tuple: number[]): number[] => {
+
+  const L: number = tuple[0];
+  const U: number = tuple[1];
+  const V: number = tuple[2];
+
+  const C: number = Math.sqrt(U * U + V * V);
+
+  let H: number;
 
   // Greys: disambiguate hue
   if (C < 0.00000001) {
-      H = 0;
+    H = 0;
   } else {
-      var Hrad:Float = Math.atan2(V, U);
-      H = (Hrad * 180.0) / Math.PI;
+    const Hrad: number = Math.atan2(V, U);
+    H = (Hrad * 180.0) / Math.PI;
 
-      if (H < 0) {
-          H = 360 + H;
-      }
+    if (H < 0) { H = 360 + H; }
   }
 
   return [L, C, H];
 }
 
-/**
-* @param tuple An array containing the color's L,C,H values.
-* @return An array containing the resulting color's LUV coordinates.
-**/
-public static function lchToLuv(tuple:Array<Float>):Array<Float> {
-  var L:Float = tuple[0];
-  var C:Float = tuple[1];
-  var H:Float = tuple[2];
 
-  var Hrad:Float = H / 360.0 * 2 * Math.PI;
-  var U:Float = Math.cos(Hrad) * C;
-  var V:Float = Math.sin(Hrad) * C;
+
+
+
+/*********
+ *
+ * @param tuple An array containing the color's L,C,H values.
+ * @return An array containing the resulting color's LUV coordinates.
+ *
+ **/
+
+const lch_to_luv = (tuple: number[]): number[] => {
+
+  // TODO match
+  const L: number = tuple[0];
+  const C: number = tuple[1];
+  const H: number = tuple[2];
+
+  const Hrad: number = H / 360.0 * 2 * Math.PI;
+  const U: number = Math.cos(Hrad) * C;
+  const V: number = Math.sin(Hrad) * C;
 
   return [L, U, V];
+
 }
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100].
-* @param tuple An array containing the color's H,S,L values in HSLuv color space.
-* @return An array containing the resulting color's LCH coordinates.
-**/
-public static function hsluvToLch(tuple:Array<Float>):Array<Float> {
-  var H:Float = tuple[0];
-  var S:Float = tuple[1];
-  var L:Float = tuple[2];
+
+
+
+
+/*********
+ *
+ * HSLuv values are ranging in `[0;360]`, `[0;100]` and `[0;100]`.
+ *
+ * @param tuple An array containing the color's H,S,L values in HSLuv color space.
+ * @return An array containing the resulting color's LCH coordinates.
+ *
+ **/
+
+const hsluv_to_lch = (tuple: number[]): number[] => {
+
+  // TODO match
+  const H: number = tuple[0];
+  const S: number = tuple[1];
+  const L: number = tuple[2];
 
   // White and black: disambiguate chroma
-  if (L > 99.9999999) {
-      return [100, 0, H];
-  }
+  if (L > 99.9999999) { return [100, 0, H]; }
+  if (L < 0.00000001) { return [  0, 0, H]; }
 
-  if (L < 0.00000001) {
-      return [0, 0, H];
-  }
-
-  var max:Float = maxChromaForLH(L, H);
-  var C:Float = max / 100 * S;
+  const max : number = max_chroma_for_lh(L, H);
+  const C   : number = max / 100 * S;
 
   return [L, C, H];
+
 }
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100].
-* @param tuple An array containing the color's LCH values.
-* @return An array containing the resulting color's HSL coordinates in HSLuv color space.
-**/
-public static function lchToHsluv(tuple:Array<Float>):Array<Float> {
-  var L:Float = tuple[0];
-  var C:Float = tuple[1];
-  var H:Float = tuple[2];
+
+
+
+
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100].
+ *
+ * @param tuple An array containing the color's LCH values.
+ * @return An array containing the resulting color's HSL coordinates in HSLuv color space.
+ *
+ **/
+
+const lch_to_hsluv = (tuple: number[]): number[] => {
+
+  // TODO match
+  const L: number = tuple[0];
+  const C: number = tuple[1];
+  const H: number = tuple[2];
 
   // White and black: disambiguate chroma
-  if (L > 99.9999999) {
-      return [H, 0, 100];
-  }
+  if (L > 99.9999999) { return [H, 0, 100]; }
+  if (L < 0.00000001) { return [H, 0,   0]; }
 
-  if (L < 0.00000001) {
-      return [H, 0, 0];
-  }
-
-  var max:Float = maxChromaForLH(L, H);
-  var S:Float = C / max * 100;
+  const max : number = max_chroma_for_lh(L, H);
+  const S   : number = C / max * 100;
 
   return [H, S, L];
+
 }
+
+
+
+
 
 /**
 * HSLuv values are in [0;360], [0;100] and [0;100].
 * @param tuple An array containing the color's H,S,L values in HPLuv (pastel variant) color space.
 * @return An array containing the resulting color's LCH coordinates.
 **/
-public static function hpluvToLch(tuple:Array<Float>):Array<Float> {
-  var H:Float = tuple[0];
-  var S:Float = tuple[1];
-  var L:Float = tuple[2];
+public static function hpluvToLch(tuple: number[]): number[] {
+  const H: number = tuple[0];
+  const S: number = tuple[1];
+  const L: number = tuple[2];
 
   if (L > 99.9999999) {
       return [100, 0, H];
@@ -404,8 +472,8 @@ public static function hpluvToLch(tuple:Array<Float>):Array<Float> {
       return [0, 0, H];
   }
 
-  var max:Float = maxSafeChromaForL(L);
-  var C:Float = max / 100 * S;
+  const max: number = maxSafeChromaForL(L);
+  const C: number = max / 100 * S;
 
   return [L, C, H];
 }
@@ -415,10 +483,10 @@ public static function hpluvToLch(tuple:Array<Float>):Array<Float> {
 * @param tuple An array containing the color's LCH values.
 * @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
 **/
-public static function lchToHpluv(tuple:Array<Float>):Array<Float> {
-  var L:Float = tuple[0];
-  var C:Float = tuple[1];
-  var H:Float = tuple[2];
+public static function lchToHpluv(tuple: number[]): number[] {
+  const L: number = tuple[0];
+  const C: number = tuple[1];
+  const H: number = tuple[2];
 
   // White and black: disambiguate saturation
   if (L > 99.9999999) {
@@ -429,43 +497,53 @@ public static function lchToHpluv(tuple:Array<Float>):Array<Float> {
       return [H, 0, 0];
   }
 
-  var max:Float = maxSafeChromaForL(L);
-  var S:Float = C / max * 100;
+  const max: number = maxSafeChromaForL(L);
+  const S: number = C / max * 100;
 
   return [H, S, L];
 }
+
+
+
+
 
 /**
 * RGB values are ranging in [0;1].
 * @param tuple An array containing the color's RGB values.
 * @return A string containing a `#RRGGBB` representation of given color.
 **/
-public static function rgbToHex(tuple:Array<Float>):String {
-  var h:String = "#";
 
-  for (i in 0...3) {
-      var chan:Float = tuple[i];
-      var c = Math.round(chan * 255);
-      var digit2 = c % 16;
-      var digit1 = Std.int((c - digit2) / 16);
-      h += hexChars.charAt(digit1) + hexChars.charAt(digit2);
-  }
+const rgb_to_hex = (tuple: number[]): string {
+
+  let h: string = '#';
+
+  [0,1,2,3].map(i => {
+    const chan: number = tuple[i];
+    const c            = Math.round(chan * 255);
+    const digit2       = c % 16;
+    const digit1       = Std.int((c - digit2) / 16);
+    h += hexChars.charAt(digit1) + hexChars.charAt(digit2);
+  });
 
   return h;
+
 }
+
+
+
+
 
 /**
 * RGB values are ranging in [0;1].
 * @param hex A `#RRGGBB` representation of a color.
 * @return An array containing the color's RGB values.
 **/
-public static function hexToRgb(hex:String):Array<Float> {
-  hex = hex.toLowerCase();
-  var ret = [];
+public static function hexToRgb(hex:String): number[] {hex = hex.toLowerCase();
+  const ret = [];
   for (i in 0...3) {
-      var digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
-      var digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
-      var n = digit1 * 16 + digit2;
+      const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
+      const digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
+      const n = digit1 * 16 + digit2;
       ret.push(n / 255.0);
   }
   return ret;
@@ -476,7 +554,7 @@ public static function hexToRgb(hex:String):Array<Float> {
 * @param tuple An array containing the color's LCH values.
 * @return An array containing the resulting color's RGB coordinates.
 **/
-public static function lchToRgb(tuple:Array<Float>):Array<Float> {
+public static function lchToRgb(tuple: number[]): number[] {
   return xyzToRgb(luvToXyz(lchToLuv(tuple)));
 }
 
@@ -485,7 +563,7 @@ public static function lchToRgb(tuple:Array<Float>):Array<Float> {
 * @param tuple An array containing the color's RGB values.
 * @return An array containing the resulting color's LCH coordinates.
 **/
-public static function rgbToLch(tuple:Array<Float>):Array<Float> {
+public static function rgbToLch(tuple: number[]): number[] {
   return luvToLch(xyzToLuv(rgbToXyz(tuple)));
 }
 
@@ -497,7 +575,7 @@ public static function rgbToLch(tuple:Array<Float>):Array<Float> {
 * @return An array containing the resulting color's RGB coordinates.
 **/
 @:keep
-public static function hsluvToRgb(tuple:Array<Float>):Array<Float> {
+public static function hsluvToRgb(tuple: number[]): number[] {
   return lchToRgb(hsluvToLch(tuple));
 }
 
@@ -507,7 +585,7 @@ public static function hsluvToRgb(tuple:Array<Float>):Array<Float> {
 * @return An array containing the resulting color's HSL coordinates in HSLuv color space.
 **/
 @:keep
-public static function rgbToHsluv(tuple:Array<Float>):Array<Float> {
+public static function rgbToHsluv(tuple: number[]): number[] {
   return lchToHsluv(rgbToLch(tuple));
 }
 
@@ -517,7 +595,7 @@ public static function rgbToHsluv(tuple:Array<Float>):Array<Float> {
 * @return An array containing the resulting color's RGB coordinates.
 **/
 @:keep
-public static function hpluvToRgb(tuple:Array<Float>):Array<Float> {
+public static function hpluvToRgb(tuple: number[]): number[] {
   return lchToRgb(hpluvToLch(tuple));
 }
 
@@ -527,7 +605,7 @@ public static function hpluvToRgb(tuple:Array<Float>):Array<Float> {
 * @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
 **/
 @:keep
-public static function rgbToHpluv(tuple:Array<Float>):Array<Float> {
+public static function rgbToHpluv(tuple: number[]): number[] {
   return lchToHpluv(rgbToLch(tuple));
 }
 
@@ -539,12 +617,12 @@ public static function rgbToHpluv(tuple:Array<Float>):Array<Float> {
 * @return A string containing a `#RRGGBB` representation of given color.
 **/
 @:keep
-public static function hsluvToHex(tuple:Array<Float>):String {
+public static function hsluvToHex(tuple: number[]):String {
   return rgbToHex(hsluvToRgb(tuple));
 }
 
 @:keep
-public static function hpluvToHex(tuple:Array<Float>):String {
+public static function hpluvToHex(tuple: number[]):String {
   return rgbToHex(hpluvToRgb(tuple));
 }
 
@@ -554,7 +632,7 @@ public static function hpluvToHex(tuple:Array<Float>):String {
 * @return An array containing the color's HSL values in HSLuv color space.
 **/
 @:keep
-public static function hexToHsluv(s:String):Array<Float> {
+public static function hexToHsluv(s:String): number[] {
   return rgbToHsluv(hexToRgb(s));
 }
 
@@ -564,8 +642,7 @@ public static function hexToHsluv(s:String):Array<Float> {
 * @return An array containing the color's HSL values in HPLuv (pastel variant) color space.
 **/
 @:keep
-public static function hexToHpluv(s:String):Array<Float> {
+public static function hexToHpluv(s:String): number[] {
   return rgbToHpluv(hexToRgb(s));
 }
 
-}
