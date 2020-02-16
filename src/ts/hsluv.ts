@@ -766,3 +766,11 @@ const hex_to_hsluv = (s: string): number[] =>
 const hex_to_hpluv = (s: string): number[] =>
 
   rgb_to_hpluv(hex_to_rgb(s));
+
+
+
+
+
+export {
+  l_to_y, y_to_l
+};

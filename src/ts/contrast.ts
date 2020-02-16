@@ -12,25 +12,25 @@ const W3C_CONTRAST_TEXT       = 4.5,
 
 
 
-const contrast_ratio = (lighterL, darkerL) =>
+const contrast_ratio = (LighterL: number, DarkerL: number) =>
 
-  (l_to_y(lighterL) + 0.05) / (l_to_y(darkerL) + 0.05);
-
-
-
-
-
-const lighter_min_l = (r: number): number =>
-
-  y_to_l((r - 1) / 20);
+  (l_to_y(LighterL) + 0.05) / (l_to_y(DarkerL) + 0.05);
 
 
 
 
 
-const darker_max_l = (r: number, lighterL: number) =>
+const lighter_min_l = (R: number): number =>
 
-  y_to_l((20 * l_to_y(lighterL) - r + 1) / (20 * r));
+  y_to_l((R - 1) / 20);
+
+
+
+
+
+const darker_max_l = (R: number, LighterL: number) =>
+
+  y_to_l((20 * l_to_y(LighterL) - R + 1) / (20 * R));
 
 
 
