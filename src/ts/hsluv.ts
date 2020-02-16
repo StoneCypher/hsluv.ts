@@ -8,6 +8,9 @@
 // TODO update all doc text to typescript, markdown
 // TODO == to ===
 // TODO code simplification passes
+// TODO enforce all "values are in" with exceptions
+// TODO Std.int() becomes what, floor?
+// TODO remove all assignment to arguments 😒
 
 
 
@@ -218,7 +221,7 @@ const xyz_to_rgb = (tuple: number[]): number[] =>
 * @return An array containing the resulting color's XYZ coordinates.
 **/
 
-const rgbToXyz = (tuple: number[]): number[] => {
+const rgb_to_xyz = (tuple: number[]): number[] => {
 
   const rgbl: number[] = [
     to_linear(tuple[0]),
@@ -454,75 +457,91 @@ const lch_to_hsluv = (tuple: number[]): number[] => {
 
 
 
-/**
-* HSLuv values are in [0;360], [0;100] and [0;100].
-* @param tuple An array containing the color's H,S,L values in HPLuv (pastel variant) color space.
-* @return An array containing the resulting color's LCH coordinates.
-**/
-public static function hpluvToLch(tuple: number[]): number[] {
+/*********
+ *
+ * HSLuv values are in `[0;360]`, `[0;100]` and `[0;100]`.
+ *
+ * @param tuple An array containing the color's H,S,L values in HPLuv (pastel variant) color space.
+ * @return An array containing the resulting color's LCH coordinates.
+ *
+ **/
+
+const hpluv_to_lch = (tuple: number[]): number[] => {
+
+  // TODO match
   const H: number = tuple[0];
   const S: number = tuple[1];
   const L: number = tuple[2];
 
-  if (L > 99.9999999) {
-      return [100, 0, H];
-  }
+  if (L > 99.9999999) { return [100, 0, H]; }
+  if (L < 0.00000001) { return [  0, 0, H]; }
 
-  if (L < 0.00000001) {
-      return [0, 0, H];
-  }
-
-  const max: number = maxSafeChromaForL(L);
-  const C: number = max / 100 * S;
+  const max : number = max_safe_chroma_for_l(L);
+  const C   : number = max / 100 * S;
 
   return [L, C, H];
+
 }
 
-/**
-* HSLuv values are ranging in [0;360], [0;100] and [0;100].
-* @param tuple An array containing the color's LCH values.
-* @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
-**/
-public static function lchToHpluv(tuple: number[]): number[] {
+
+
+
+
+/*********
+ *
+ * HSLuv values are ranging in [0;360], [0;100] and [0;100].
+ *
+ * @param tuple An array containing the color's LCH values.
+ * @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
+ *
+ **/
+
+const lch_to_hpluv = (tuple: number[]): number[] => {
+
+  // TODO match
   const L: number = tuple[0];
   const C: number = tuple[1];
   const H: number = tuple[2];
 
   // White and black: disambiguate saturation
-  if (L > 99.9999999) {
-      return [H, 0, 100];
-  }
+  if (L > 99.9999999) { return [H, 0, 100]; }
+  if (L < 0.00000001) { return [H, 0,   0]; }
 
-  if (L < 0.00000001) {
-      return [H, 0, 0];
-  }
-
-  const max: number = maxSafeChromaForL(L);
-  const S: number = C / max * 100;
+  const max : number = max_safe_chroma_for_l(L);
+  const S   : number = C / max * 100;
 
   return [H, S, L];
+
 }
 
 
 
 
 
-/**
-* RGB values are ranging in [0;1].
-* @param tuple An array containing the color's RGB values.
-* @return A string containing a `#RRGGBB` representation of given color.
-**/
+/*********
+ *
+ * RGB values are ranging in [0;1].
+ *
+ * @param tuple An array containing the color's RGB values.
+ * @return A string containing a `#RRGGBB` representation of given color.
+ *
+ **/
 
-const rgb_to_hex = (tuple: number[]): string {
+const rgb_to_hex = (tuple: number[]): string => {
 
   let h: string = '#';
 
-  [0,1,2,3].map(i => {
-    const chan: number = tuple[i];
-    const c            = Math.round(chan * 255);
-    const digit2       = c % 16;
-    const digit1       = Std.int((c - digit2) / 16);
+  [0,1,2].map(i => {
+
+  // TODO FIXME isn't this just a radix print 😒
+
+    const chan   : number = tuple[i];
+    const c      : number = Math.round(chan * 255);
+    const digit2 : number = c % 16;
+    const digit1 : number = Math.floor((c - digit2) / 16);  // TODO CHECKME this was Std.int(), not 100% certain it's floor, maybe was round instead?
+
     h += hexChars.charAt(digit1) + hexChars.charAt(digit2);
+
   });
 
   return h;
@@ -533,39 +552,69 @@ const rgb_to_hex = (tuple: number[]): string {
 
 
 
-/**
-* RGB values are ranging in [0;1].
-* @param hex A `#RRGGBB` representation of a color.
-* @return An array containing the color's RGB values.
-**/
-public static function hexToRgb(hex:String): number[] {hex = hex.toLowerCase();
-  const ret = [];
-  for (i in 0...3) {
-      const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
-      const digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
-      const n = digit1 * 16 + digit2;
-      ret.push(n / 255.0);
-  }
+/*********
+ *
+ * RGB values are ranging in [0;1].
+ *
+ * @param hex A `#RRGGBB` representation of a color.
+ * @return An array containing the color's RGB values.
+ *
+ **/
+
+const hex_to_rgb = (hex: string): number[] => {
+
+  // TODO remove all assignment to arguments 😒
+  hex = hex.toLowerCase();
+
+  // TODO this should be the result of the map, not pushed
+  const ret: number[] = [];
+
+  [0,1,2,3].map(i => {
+
+    const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
+    const digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
+    const n = digit1 * 16 + digit2;
+
+    ret.push(n / 255.0);
+
+  });
+
   return ret;
+
 }
 
+
+
+
+
 /**
-* RGB values are ranging in [0;1].
-* @param tuple An array containing the color's LCH values.
-* @return An array containing the resulting color's RGB coordinates.
-**/
-public static function lchToRgb(tuple: number[]): number[] {
-  return xyzToRgb(luvToXyz(lchToLuv(tuple)));
-}
+ *
+ * RGB values are ranging in [0;1].
+ *
+ * @param tuple An array containing the color's LCH values.
+ * @return An array containing the resulting color's RGB coordinates.
+ *
+ **/
+
+const lch_to_rgb = (tuple: number[]): number[] =>
+  xyz_to_rgb(luv_to_xyz(lch_to_luv(tuple)));
+
+
+
+
 
 /**
 * RGB values are ranging in [0;1].
 * @param tuple An array containing the color's RGB values.
 * @return An array containing the resulting color's LCH coordinates.
 **/
-public static function rgbToLch(tuple: number[]): number[] {
-  return luvToLch(xyzToLuv(rgbToXyz(tuple)));
-}
+
+const rgb_to_lch = (tuple: number[]): number[] =>
+  luv_to_lch(xyz_to_luv(rgb_to_xyz(tuple)));
+
+
+
+
 
 // RGB <--> HPLuv
 
@@ -574,30 +623,39 @@ public static function rgbToLch(tuple: number[]): number[] {
 * @param tuple An array containing the color's HSL values in HSLuv color space.
 * @return An array containing the resulting color's RGB coordinates.
 **/
-@:keep
-public static function hsluvToRgb(tuple: number[]): number[] {
-  return lchToRgb(hsluvToLch(tuple));
-}
+
+const hsluv_to_rgb = (tuple: number[]): number[] =>
+  lch_to_rgb(hsluv_to_lch(tuple));
+
+
+
+
 
 /**
 * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
 * @param tuple An array containing the color's RGB coordinates.
 * @return An array containing the resulting color's HSL coordinates in HSLuv color space.
 **/
-@:keep
-public static function rgbToHsluv(tuple: number[]): number[] {
-  return lchToHsluv(rgbToLch(tuple));
-}
+
+const rgb_to_hsluv = (tuple: number[]): number[] =>
+  lch_to_hsluv(rgb_to_lch(tuple));
+
+
+
+
 
 /**
 * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
 * @param tuple An array containing the color's HSL values in HPLuv (pastel variant) color space.
 * @return An array containing the resulting color's RGB coordinates.
 **/
-@:keep
-public static function hpluvToRgb(tuple: number[]): number[] {
-  return lchToRgb(hpluvToLch(tuple));
-}
+
+const hpluv_to_rgb = (tuple: number[]): number[] =>
+  lch_to_rgb(hpluv_to_lch(tuple));
+
+
+
+
 
 /**
 * HSLuv values are ranging in [0;360], [0;100] and [0;100] and RGB in [0;1].
@@ -605,8 +663,8 @@ public static function hpluvToRgb(tuple: number[]): number[] {
 * @return An array containing the resulting color's HSL coordinates in HPLuv (pastel variant) color space.
 **/
 @:keep
-public static function rgbToHpluv(tuple: number[]): number[] {
-  return lchToHpluv(rgbToLch(tuple));
+public static function rgb_to_hpluv(tuple: number[]): number[] {
+  return lch_to_hpluv(rgb_to_lch(tuple));
 }
 
 // Hex
@@ -617,13 +675,13 @@ public static function rgbToHpluv(tuple: number[]): number[] {
 * @return A string containing a `#RRGGBB` representation of given color.
 **/
 @:keep
-public static function hsluvToHex(tuple: number[]):String {
-  return rgbToHex(hsluvToRgb(tuple));
+public static function hsluv_to_hex(tuple: number[]):String {
+  return rgb_to_hex(hpluv_to_rgb(tuple));
 }
 
 @:keep
-public static function hpluvToHex(tuple: number[]):String {
-  return rgbToHex(hpluvToRgb(tuple));
+public static function hpluv_to_hex(tuple: number[]):String {
+  return rgb_to_hex(hpluv_to_rgb(tuple));
 }
 
 /**
@@ -632,8 +690,8 @@ public static function hpluvToHex(tuple: number[]):String {
 * @return An array containing the color's HSL values in HSLuv color space.
 **/
 @:keep
-public static function hexToHsluv(s:String): number[] {
-  return rgbToHsluv(hexToRgb(s));
+public static function hex_to_hsluv(s:String): number[] {
+  return rgb_to_hsluv(hex_to_rgb(s));
 }
 
 /**
@@ -642,7 +700,7 @@ public static function hexToHsluv(s:String): number[] {
 * @return An array containing the color's HSL values in HPLuv (pastel variant) color space.
 **/
 @:keep
-public static function hexToHpluv(s:String): number[] {
-  return rgbToHpluv(hexToRgb(s));
+public static function hex_to_hpluv(s:String): number[] {
+  return rgb_to_hpluv(hex_to_rgb(s));
 }
 
