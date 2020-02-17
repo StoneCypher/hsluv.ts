@@ -1,25 +1,21 @@
 # hsluv_ts
+
+<div id="intro">
+
 An HSLuv implementation in typescript, ported from the [definitive reference
 Haxe version](https://github.com/hsluv/hsluv).
 
-[![Actions Status](https://github.com/StoneCypher/hsluv_ts/workflows/Node.js%20CI/badge.svg)](https://github.com/StoneCypher/hsluv_ts/actions)
+MIT licensed.
 
-[Generated library documentation](https://stonecypher.github.io/hsluv_ts/docs/)
+<img src="badges/version.svg"/> [![Actions Status](https://github.com/StoneCypher/hsluv_ts/workflows/Node.js%20CI/badge.svg)](https://github.com/StoneCypher/hsluv_ts/actions)
 
-This implementation passed [the author's 24,000
-tests](https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json).
-By comparison to the reference implementation, [calculations are accurate to
-within 1 in 10<sup>15</sup>](https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25),
-which [the author says is fine](https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374).
+<img src="badges/jest-tests.svg"/> <img src="badges/jest-suites.svg"/> <img src="badges/jest-coverage.svg"/>
 
-This implementation provides `.d.ts` for Typescript, `es6` native tree-shakeable
-for most work, `es6` commonjs bundled for quick work, `es6 iife` for in-browser
-learning and debugging, and `es6 iife minified` for bandwidth-sensitive
-prepackaged deployment like CDNs.  `main` refers to `es6 cjs`, and `module`
-refers to `es6` native tree-shakeable.
+➡️ [Site](https://stonecypher.github.io/hsluv_ts/)
 
-This implementation is [CI tested](https://github.com/StoneCypher/hsluv_ts/actions)
-under Node 8,12,13 on Windows, Mac, and Ubuntu.
+➡️ [Generated library documentation](https://stonecypher.github.io/hsluv_ts/docs/)
+
+</div>
 
 
 
@@ -36,24 +32,6 @@ two color spaces: `HSLuv` and `HPLuv`.  However, in the process, we also
 implement transformations for `rgb` in numeric, `rgb` in hex strings, `hsl`,
 `xyz`, `luv`, and `lch`, as well as the `lightness` to `y channel` transform in
 both directions.
-
-
-
-
-
-<br/><br/>
-
-## Wait, are there two of these?
-
-I made this because Typescript wasn't on the author's somewhat extensive
-language list, and because the Haxe tooling wasn't very convenient under
-`rollup`.  When I was done and tried to publish, [I realized someone else
-already had done this](https://www.npmjs.com/package/hsluv-ts), and even used
-the same name I did; it was just missing from the author's list.
-
-However, my approach to typing, packaging, and tooling is mildly different than
-theirs, so I'm gonna publish anyway.  Besides, it's already finished (sigh 😞,)
-and I like some of the differences in mine between these two projects.
 
 
 
@@ -123,7 +101,7 @@ console.log( hex_to_hsluv('#5c78a5') );
 
 ## API
 
-The following functions are exposed.
+[The following functions are exposed](https://stonecypher.github.io/hsluv_ts/docs/modules/_hsluv_.html).
 
 All functions take two arguments, according to the types in their names.
 
@@ -170,9 +148,58 @@ All functions take two arguments, according to the types in their names.
 
 <br/><br/>
 
+## Bundling
+
+This implementation provides `.d.ts` for Typescript, `es6` native tree-shakeable
+for most work, `es6` commonjs bundled for quick work, `es6 iife` for in-browser
+learning and debugging, and `es6 iife minified` for bandwidth-sensitive
+prepackaged deployment like CDNs.  `main` refers to `es6 cjs`, and `module`
+refers to `es6` native tree-shakeable.
+
+
+
+
+
+<br/><br/>
+
+## Quality
+
+This implementation passed [the author's 24,000
+tests](https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json).
+By comparison to the reference implementation, [calculations are accurate to
+within 1 in 10<sup>15</sup>](https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25),
+which [the author says is fine](https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374).
+
+This implementation is [CI tested](https://github.com/StoneCypher/hsluv_ts/actions)
+under Node 8,12,13 on Windows, Mac, and Ubuntu.
+
+
+
+
+
+<br/><br/>
+
 ## Changes
 
 * Typescript.
 * Names are now in `snake_case` instead of `camelCase`.
 * Many tests were added in the name of code coverage.
 * CI under Github Actions
+
+
+
+
+
+<br/><br/>
+
+## Wait, are there two of these?
+
+I made this because Typescript wasn't on the author's somewhat extensive
+language list, and because the Haxe tooling wasn't very convenient under
+`rollup`.  When I was done and tried to publish, [I realized someone else
+already had done this](https://www.npmjs.com/package/hsluv-ts), and even used
+the same name I did; it was just missing from the author's list.
+
+However, my approach to typing, packaging, and tooling is mildly different than
+theirs, so I'm gonna publish anyway.  Besides, it's already finished (sigh 😞,)
+and I like some of the differences in mine between these two projects.

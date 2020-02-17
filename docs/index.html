@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+
+  <head>
+
+    <title>HSLuv_ts</title>
+    <link rel="stylesheet" type="text/css" href="highlight.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Alegreya:800|Inconsolata|Raleway&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+
+      body, html, h1, h2, h3, h4, h5, h6, p   { border: 0; padding: 0; margin: 0; }
+      *+p, *+h1, *+h2, *+h3, *+h4, *+h5, *+h6 { margin-top: 1em; }
+      body                                    { padding: 4em; font-size: 150%; }
+      #intro                                  { padding-top: 1em; }
+      #intro p                                { text-indent: 0; }
+
+      a, a:visited { color: #06f; text-decoration: none; }
+      a:hover      { color: #00f; text-decoration: underline; }
+
+      pre {
+        font-family: Inconsolata, monospace;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Alegreya', "helvetica neue", "helvetica", sans-serif;
+        font-weight: 800;
+      }
+
+      h1 { font-size: 250%; color: #024; border-bottom: 0.03em solid #06b; }
+      h2 { font-size: 175%; color: #246; border-bottom: 0.03em solid #48c; }
+      h3 { font-size: 145%; color: #468; border-bottom: 0.03em solid #8ad; }
+
+      p {
+        line-height: 145%;
+        text-indent: 1.75em;
+      }
+
+      li+li { padding-top: 0.25em; }
+
+      li, p { font-family: Raleway, "Times New Roman", "Times", serif; }
+
+      pre.hljs { border: 1px solid #ddd; padding: 1em; }
+
+    </style>
+
+  </head>
+
+  <body><h1>hsluv_ts</h1>
+<div id="intro">
+<p>An HSLuv implementation in typescript, ported from the <a href="https://github.com/hsluv/hsluv">definitive reference
+Haxe version</a>.</p>
+<p>MIT licensed.</p>
+<p><img src="badges/version.svg"/> <a href="https://github.com/StoneCypher/hsluv_ts/actions"><img src="https://github.com/StoneCypher/hsluv_ts/workflows/Node.js%20CI/badge.svg" alt="Actions Status"></a></p>
+<p><img src="badges/jest-tests.svg"/> <img src="badges/jest-suites.svg"/> <img src="badges/jest-coverage.svg"/></p>
+<p>➡️ <a href="https://stonecypher.github.io/hsluv_ts/">Site</a></p>
+<p>➡️ <a href="https://stonecypher.github.io/hsluv_ts/docs/">Generated library documentation</a></p>
+</div>
+<p><br/><br/></p>
+<h2>What is this?</h2>
+<p>Chances are you already know what <code>HSLuv</code> (formerly aka <code>HuSL</code>) is if you're
+here, but if not, <a href="https://www.hsluv.org/"><code>HSLuv</code> is a color scale meant to be easy for humans to
+interpret</a>.  This package primarily exists to implement
+two color spaces: <code>HSLuv</code> and <code>HPLuv</code>.  However, in the process, we also
+implement transformations for <code>rgb</code> in numeric, <code>rgb</code> in hex strings, <code>hsl</code>,
+<code>xyz</code>, <code>luv</code>, and <code>lch</code>, as well as the <code>lightness</code> to <code>y channel</code> transform in
+both directions.</p>
+<br/>
+<h3>HSLuv</h3>
+<p>What's interesting about <code>HSLuv</code> is that the apparent brightness is normalized.
+If you've tried to pick color palettes in the regular <code>HSL</code> space, you've
+probably noticed that at the same <code>lightness</code>, the colors in the blue end of the
+<code>hue</code> appear far darker than the colors in the yellow end.</p>
+<p><code>HSLuv</code> fixes that.  For any given <code>hue</code>, the apparent brightness of a given
+<code>lightness</code> is meant to be simiar (using a whole bunch of complicated math and
+human measurement.)</p>
+<p>From <a href="https://hsluv.org/comparison/">Alexei's page</a>,</p>
+<img src="comparison_image.png" width="400"/>
+<br/>
+<h3>HPLuv</h3>
+<p>The downside of <code>HSLuv</code> is that there are colors it can't represent.  There is
+no blue with the apparent brightness of canary yellow.</p>
+<p><code>HPLuv</code> makes these work by sacrificing saturation correctness.  <code>HPLuv</code> will
+always produce a color, but sometimes a less satisfying one than <code>HSLuv</code>.</p>
+<p><br/><br/></p>
+<h2>How to use</h2>
+<pre class="hljs"><code>npm install --save-dev hsluv_ts
+</code></pre>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } <span class="hljs-keyword">from</span> <span class="hljs-string">'hsluv_ts'</span>;
+
+<span class="hljs-built_in">console</span>.log( hsluv_to_hex([ <span class="hljs-number">250</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span> ]) );
+<span class="hljs-comment">// prints "#5c78a5"</span>
+
+<span class="hljs-built_in">console</span>.log( hsluv_to_rgb([ <span class="hljs-number">250</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span> ]) );
+<span class="hljs-comment">// prints [ 0.35957778969721066, 0.4708793745621595, 0.6462180065016022 ]</span>
+
+<span class="hljs-built_in">console</span>.log( hex_to_hsluv(<span class="hljs-string">'#5c78a5'</span>) );
+<span class="hljs-comment">// prints [ 250.2650513570262, 49.70313649414815, 50.00687151772391 ]</span>
+</code></pre>
+<p><br/><br/></p>
+<h2>API</h2>
+<p><a href="https://stonecypher.github.io/hsluv_ts/docs/modules/_hsluv_.html">The following functions are exposed</a>.</p>
+<p>All functions take two arguments, according to the types in their names.</p>
+<ul>
+<li><code>rgb_to_hsluv</code></li>
+<li><code>rgb_to_hpluv</code></li>
+<li><code>hsluv_to_rgb</code></li>
+<li><code>hpluv_to_rgb</code></li>
+<li><code>hex_to_hsluv</code></li>
+<li><code>hex_to_hpluv</code></li>
+<li><code>hsluv_to_hex</code></li>
+<li><code>hpluv_to_hex</code></li>
+<li><code>lch_to_hsluv</code></li>
+<li><code>lch_to_hpluv</code></li>
+<li><code>hsluv_to_lch</code></li>
+<li><code>hpluv_to_lch</code></li>
+<li><code>rgb_to_xyz</code></li>
+<li><code>xyz_to_rgb</code></li>
+<li><code>rgb_to_lch</code></li>
+<li><code>lch_to_rgb</code></li>
+<li><code>luv_to_xyz</code></li>
+<li><code>xyz_to_luv</code></li>
+<li><code>luv_to_lch</code></li>
+<li><code>lch_to_luv</code></li>
+<li><code>l_to_y</code></li>
+<li><code>y_to_l</code></li>
+<li><code>hex_to_rgb</code></li>
+</ul>
+<br/>
+<h3>API Types</h3>
+<ul>
+<li><code>l</code> and <code>y</code> are <code>number</code>s.</li>
+<li><code>hex</code> is a seven-character <code>string</code> starting with <code>#</code>.
+<ul>
+<li>The library consumes upper and lower case, but produces lower case.</li>
+</ul>
+</li>
+<li><code>hsl</code> and <code>hpl</code> are a tuple (array) of range <code>[0;360]</code>, <code>[0;100]</code>, <code>[0;100]</code></li>
+<li><code>rgb</code> is a tuple of range <code>[0;1]</code>, <code>[0;1]</code>, <code>[0;1]</code></li>
+<li><code>xyz</code>, <code>lch</code>, and <code>luv</code> are a tuple of three unbounded signed <code>number</code>s</li>
+</ul>
+<p><br/><br/></p>
+<h2>Bundling</h2>
+<p>This implementation provides <code>.d.ts</code> for Typescript, <code>es6</code> native tree-shakeable
+for most work, <code>es6</code> commonjs bundled for quick work, <code>es6 iife</code> for in-browser
+learning and debugging, and <code>es6 iife minified</code> for bandwidth-sensitive
+prepackaged deployment like CDNs.  <code>main</code> refers to <code>es6 cjs</code>, and <code>module</code>
+refers to <code>es6</code> native tree-shakeable.</p>
+<p><br/><br/></p>
+<h2>Quality</h2>
+<p>This implementation passed <a href="https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json">the author's 24,000
+tests</a>.
+By comparison to the reference implementation, <a href="https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25">calculations are accurate to
+within 1 in 10<sup>15</sup></a>,
+which <a href="https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374">the author says is fine</a>.</p>
+<p>This implementation is <a href="https://github.com/StoneCypher/hsluv_ts/actions">CI tested</a>
+under Node 8,12,13 on Windows, Mac, and Ubuntu.</p>
+<p><br/><br/></p>
+<h2>Changes</h2>
+<ul>
+<li>Typescript.</li>
+<li>Names are now in <code>snake_case</code> instead of <code>camelCase</code>.</li>
+<li>Many tests were added in the name of code coverage.</li>
+<li>CI under Github Actions</li>
+</ul>
+<p><br/><br/></p>
+<h2>Wait, are there two of these?</h2>
+<p>I made this because Typescript wasn't on the author's somewhat extensive
+language list, and because the Haxe tooling wasn't very convenient under
+<code>rollup</code>.  When I was done and tried to publish, <a href="https://www.npmjs.com/package/hsluv-ts">I realized someone else
+already had done this</a>, and even used
+the same name I did; it was just missing from the author's list.</p>
+<p>However, my approach to typing, packaging, and tooling is mildly different than
+theirs, so I'm gonna publish anyway.  Besides, it's already finished (sigh 😞,)
+and I like some of the differences in mine between these two projects.</p>
+  </body>
+
+</html>

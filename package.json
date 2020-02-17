@@ -1,18 +1,20 @@
 {
   "name": "hsluv_ts",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.bundle.cjs.js",
   "module": "dist/es6/hsluv.js",
   "scripts": {
-    "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts && touch docs/docs/.nojekyll",
-    "site": "cp ./README.md docs/ && cp ./*.png docs/",
-    "clean": "rimraf -f dist/ && rimraf -f docs/",
+    "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts && touch docs/.nojekyll && cd docs && mkdir badges && cd docs && mkdir badges && cd .. && cd .. &&  cp -r badges/* docs/badges/ && cp -r badges/* docs/docs/badges/",
+    "markdown": "node src/build_js/markdown-it.js",
+    "site": "cp ./README.md docs/ && cp ./*.png docs/ && cp ./*.png docs/docs/ && npm run markdown && cp node_modules/markdown-it-highlight/dist/index.css docs/highlight.css",
+    "clean": "rimraf -f dist/ && rimraf -f docs/ && rimraf -f badges/ && mkdir badges",
     "rollup": "rollup -c",
     "terser": "terser dist/es6/hsluv.bundle.iife.js --compress --mangle --output dist/es6/hsluv.bundle.iife.min.js",
     "typescript": "tsc",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run docs && npm run site",
-    "test": "echo \"This can take 30+ seconds\" && jest --colors"
+    "badges": "node src/build_js/make_badges.js",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run badges && npm run docs && npm run site",
+    "test": "echo \"This can take 30+ seconds\" && jest --colors --json --outputFile=coverage/jest.json"
   },
   "repository": {
     "type": "git",
@@ -32,12 +34,19 @@
   "homepage": "https://github.com/StoneCypher/hsluv_ts#readme",
   "devDependencies": {
     "@types/jest": "^25.1.2",
+    "highlight.js": "^9.18.1",
     "jest": "^25.1.0",
+    "markdown-it": "^10.0.0",
+    "markdown-it-highlight": "^0.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
     "terser": "^4.6.3",
     "ts-jest": "^25.2.0",
     "typedoc": "^0.16.10",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "xml2js": "^0.4.23"
+  },
+  "dependencies": {
+    "gh-badges": "^2.2.1"
   }
 }
