@@ -1,14 +1,15 @@
 {
   "name": "hsluv_ts",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.bundle.cjs.js",
   "module": "dist/es6/hsluv.js",
   "scripts": {
     "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts && touch docs/docs/.nojekyll",
-    "site": "cp ./README.md docs/ && cp ./comparison_image.png docs/",
+    "site": "cp ./README.md docs/ && cp ./*.png docs/",
     "clean": "rimraf -f dist/ && rimraf -f docs/",
     "rollup": "rollup -c",
+    "terser": "terser",
     "typescript": "tsc",
     "build": "npm run clean && npm run typescript && npm run rollup && npm run docs && npm run site",
     "test": "echo \"This can take 30+ seconds\" && jest --colors"
@@ -34,6 +35,7 @@
     "jest": "^25.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
+    "terser": "^4.6.3",
     "ts-jest": "^25.2.0",
     "typedoc": "^0.16.10",
     "typescript": "^3.7.5"

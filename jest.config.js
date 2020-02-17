@@ -5,6 +5,7 @@ module.exports = {
   testEnvironment      : 'node',
   testMatch            : ['**/*.test.ts'],
   transform            : { '^.+\\.ts$': 'ts-jest' },
-  verbose              : false
+  verbose              : false,
+  collectCoverage      : true
 
 };
