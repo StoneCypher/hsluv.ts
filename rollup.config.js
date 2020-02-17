@@ -9,21 +9,6 @@ const config = {
     name      : 'hsluv'
   }
 
-  // plugins   : [
-
-  //   // nodeResolve({
-  //   //   mainFields     : ['module', 'main'],
-  //   //   browser        : true,
-  //   //   extensions     : [ '.js' ],
-  //   //   preferBuiltins : false
-  //   // }),
-
-  //   // commonjs({
-  //   //   include: 'node_modules/**',
-  //   // })
-
-  // ]
-
 };
 
 

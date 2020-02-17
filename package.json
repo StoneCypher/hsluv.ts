@@ -1,13 +1,14 @@
 {
   "name": "hsluv-ts",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A reimplementation of hsluv in typescript",
-  "main": "index.js",
+  "main": "dist/es6/hsluv.js",
   "scripts": {
+    "docs": "typedoc --out docs/docs src/ts",
     "clean": "rimraf -f dist/ && rimraf -f docs/",
     "rollup": "rollup -c",
     "typescript": "tsc",
-    "build": "npm run clean && npm run typescript && npm run rollup",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,6 +30,7 @@
   "devDependencies": {
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
+    "typedoc": "^0.16.10",
     "typescript": "^3.7.5"
   }
 }

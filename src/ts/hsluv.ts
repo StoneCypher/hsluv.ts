@@ -3,7 +3,6 @@
 // Generally the same code, but some names changed, and the packaging replaced
 // s/haxe/typescript/g
 
-// TODO search for Float, integer, array, public, static, keep
 // TODO a lot of these `number[]`s can be replaced with `xyz` or `hsl` or etc
 // TODO update all doc text to typescript, markdown
 // TODO == to ===
