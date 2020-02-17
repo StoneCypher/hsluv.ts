@@ -1,6 +1,6 @@
 {
-  "name": "hsluv-ts",
-  "version": "0.7.2",
+  "name": "hsluv_ts",
+  "version": "0.7.3",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.js",
   "scripts": {

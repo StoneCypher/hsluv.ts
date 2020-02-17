@@ -1,10 +1,23 @@
-# hsluv-ts
+# hsluv_ts
 An HSLuv implementation in typescript, ported from the [definitive reference
 Haxe version](https://github.com/hsluv/hsluv).  By comparison to the reference
 implementation, [calculations are accurate to within 1 in 10<sup>15</sup>
 ](https://github.com/StoneCypher/hsluv-ts/blob/master/src/ts/hsluv.test.ts#L25).
 
 [Generated library documentation](https://stonecypher.github.io/hsluv-ts/docs/)
+
+I made this because Typescript wasn't on the author's somewhat extensive
+language list, and because the Haxe tooling wasn't very convenient under
+`rollup`.  When I was done and tried to publish, [I realized someone else
+already had done this](https://www.npmjs.com/package/hsluv-ts), and even used
+the same name I did; it was just missing from the author's list.
+
+However, my approach to typing, packaging, and tooling is mildly different than
+theirs, so I'm gonna publish anyway.  Besides, it's already finished (sigh 😞)
+
+
+
+
 
 <br/><br/>
 
@@ -35,11 +48,9 @@ human measurement.)
 
 From [Alexei's page](https://hsluv.org/comparison/),
 
-<div style="display:inline-block;width:420px;">
-
 ![](comparison_image.png)
 
-</div>
+
 
 
 
