@@ -10,7 +10,7 @@
     "rollup": "rollup -c",
     "typescript": "tsc",
     "build": "npm run clean && npm run typescript && npm run rollup && npm run docs && npm run site",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --colors"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,11 @@
   },
   "homepage": "https://github.com/StoneCypher/hsluv-ts#readme",
   "devDependencies": {
+    "@types/jest": "^25.1.2",
     "jest": "^25.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
+    "ts-jest": "^25.2.0",
     "typedoc": "^0.16.10",
     "typescript": "^3.7.5"
   }

@@ -106,7 +106,7 @@ const get_bounds = (L: number): line[] => {
   let sub1: number = Math.pow(L + 16, 3) / 1560896,
       sub2: number = (sub1 > epsilon)? sub1 : (L / kappa);
 
-  [0,1,2,3].map(c => {
+  [0,1,2].map(c => {
 
     let m1: number = m[c][0],
         m2: number = m[c][1],
@@ -591,7 +591,7 @@ const hex_to_rgb = (hex: string): number[] => {
   // TODO this should be the result of the map, not pushed
   const ret: number[] = [];
 
-  [0,1,2,3].map(i => {
+  [0,1,2].map(i => {
 
     const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
     const digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
@@ -722,7 +722,7 @@ const rgb_to_hpluv = (tuple: number[]): number[] =>
 
 const hsluv_to_hex = (tuple: number[]): string =>
 
-  rgb_to_hex(hpluv_to_rgb(tuple));
+  rgb_to_hex(hsluv_to_rgb(tuple));
 
 
 
@@ -803,6 +803,8 @@ export {
   lch_to_luv,
 
   l_to_y,
-  y_to_l
+  y_to_l,
+
+  hex_to_rgb
 
 };

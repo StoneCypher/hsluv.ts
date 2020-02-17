@@ -2,11 +2,13 @@
 // sourced and reformatted from
 //   https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json
 
+import { testdata } from './types';
 
 
 
 
-const data = {
+
+const data: testdata = {
 
   "#11ee00": {
     "lch": [

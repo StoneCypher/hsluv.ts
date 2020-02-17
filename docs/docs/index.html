@@ -76,8 +76,15 @@
 				</a>
 				<p>Chances are you already know what <code>HSLuv</code> (formerly aka <code>HuSL</code>) is if you&#39;re
 					here, but if not, <a href="https://www.hsluv.org/"><code>HSLuv</code> is a color scale meant to be easy for humans to
-					interpret</a>.  This package actually implements two color
-				spaces: <code>HSLuv</code> and <code>HPLuv</code>.</p>
+					interpret</a>.  This package primarily exists to implement
+					two color spaces: <code>HSLuv</code> and <code>HPLuv</code>.  However, in the process, we also
+					implement transformations for <code>rgb</code> in numeric, <code>rgb</code> in hex strings, <code>hsl</code>,
+					<code>xyz</code>, <code>luv</code>, and <code>lch</code>, as well as the <code>lightness</code> to <code>y channel</code> transform in
+				both directions.</p>
+				<br/>
+				<a href="#hsluv" id="hsluv" style="color: inherit; text-decoration: none;">
+					<h3>HSLuv</h3>
+				</a>
 				<p>What&#39;s interesting about <code>HSLuv</code> is that the apparent brightness is normalized.
 					If you&#39;ve tried to pick color palettes in the regular <code>HSL</code> space, you&#39;ve
 					probably noticed that at the same <code>lightness</code>, the colors in the blue end of the
@@ -87,6 +94,14 @@
 				human measurement.)</p>
 				<p>From <a href="https://hsluv.org/comparison/">Alexei&#39;s page</a>,</p>
 				<p><img src="comparison_image.png" alt=""></p>
+				<br/>
+				<a href="#hpluv" id="hpluv" style="color: inherit; text-decoration: none;">
+					<h3>HPLuv</h3>
+				</a>
+				<p>The downside of <code>HSLuv</code> is that there are colors it can&#39;t represent.  There is
+				no blue with the apparent brightness of canary yellow.</p>
+				<p><code>HPLuv</code> makes these work by sacrificing saturation correctness.  <code>HPLuv</code> will
+				always produce a color, but sometimes a less satisfying one than <code>HSLuv</code>.</p>
 				<p><br/><br/></p>
 				<a href="#how-to-use" id="how-to-use" style="color: inherit; text-decoration: none;">
 					<h2>How to use</h2>
