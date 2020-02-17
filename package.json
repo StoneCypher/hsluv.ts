@@ -1,8 +1,9 @@
 {
   "name": "hsluv_ts",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "description": "A reimplementation of hsluv in typescript",
-  "main": "dist/es6/hsluv.js",
+  "main": "dist/es6/hsluv.bundle.cjs.js",
+  "module": "dist/es6/hsluv.js",
   "scripts": {
     "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts && touch docs/docs/.nojekyll",
     "site": "cp ./README.md docs/ && cp ./comparison_image.png docs/",
@@ -10,11 +11,11 @@
     "rollup": "rollup -c",
     "typescript": "tsc",
     "build": "npm run clean && npm run typescript && npm run rollup && npm run docs && npm run site",
-    "test": "jest --colors"
+    "test": "echo \"This can take 30+ seconds\" && jest --colors"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StoneCypher/hsluv-ts.git"
+    "url": "git+https://github.com/StoneCypher/hsluv_ts.git"
   },
   "keywords": [
     "hsl",
@@ -25,9 +26,9 @@
   "author": "John Haugeland <stonecypher@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StoneCypher/hsluv-ts/issues"
+    "url": "https://github.com/StoneCypher/hsluv_ts/issues"
   },
-  "homepage": "https://github.com/StoneCypher/hsluv-ts#readme",
+  "homepage": "https://github.com/StoneCypher/hsluv_ts#readme",
   "devDependencies": {
     "@types/jest": "^25.1.2",
     "jest": "^25.1.0",

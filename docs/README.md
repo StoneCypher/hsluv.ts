@@ -2,9 +2,9 @@
 An HSLuv implementation in typescript, ported from the [definitive reference
 Haxe version](https://github.com/hsluv/hsluv).  By comparison to the reference
 implementation, [calculations are accurate to within 1 in 10<sup>15</sup>
-](https://github.com/StoneCypher/hsluv-ts/blob/master/src/ts/hsluv.test.ts#L25).
+](https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25).
 
-[Generated library documentation](https://stonecypher.github.io/hsluv-ts/docs/)
+[Generated library documentation](https://stonecypher.github.io/hsluv_ts/docs/)
 
 I made this because Typescript wasn't on the author's somewhat extensive
 language list, and because the Haxe tooling wasn't very convenient under
@@ -48,7 +48,7 @@ human measurement.)
 
 From [Alexei's page](https://hsluv.org/comparison/),
 
-![](comparison_image.png)
+<img src="comparison_image.png" width="400"/>
 
 
 
@@ -73,11 +73,11 @@ always produce a color, but sometimes a less satisfying one than `HSLuv`.
 ## How to use
 
 ```
-npm install --save-dev hsluv-ts
+npm install --save-dev hsluv_ts
 ```
 
 ```typescript
-import { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } from 'hsluv-ts';
+import { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } from 'hsluv_ts';
 
 console.log( hsluv_to_hex([ 250, 50, 50 ]) );
 // prints "#5c78a5"

@@ -69,9 +69,9 @@
 				</a>
 				<p>An HSLuv implementation in typescript, ported from the <a href="https://github.com/hsluv/hsluv">definitive reference
 					Haxe version</a>.  By comparison to the reference
-					implementation, <a href="https://github.com/StoneCypher/hsluv-ts/blob/master/src/ts/hsluv.test.ts#L25">calculations are accurate to within 1 in 10<sup>15</sup>
+					implementation, <a href="https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25">calculations are accurate to within 1 in 10<sup>15</sup>
 				</a>.</p>
-				<p><a href="https://stonecypher.github.io/hsluv-ts/docs/">Generated library documentation</a></p>
+				<p><a href="https://stonecypher.github.io/hsluv_ts/docs/">Generated library documentation</a></p>
 				<p>I made this because Typescript wasn&#39;t on the author&#39;s somewhat extensive
 					language list, and because the Haxe tooling wasn&#39;t very convenient under
 					<code>rollup</code>.  When I was done and tried to publish, <a href="https://www.npmjs.com/package/hsluv-ts">I realized someone else
@@ -102,7 +102,7 @@
 					<code>lightness</code> is meant to be simiar (using a whole bunch of complicated math and
 				human measurement.)</p>
 				<p>From <a href="https://hsluv.org/comparison/">Alexei&#39;s page</a>,</p>
-				<p><img src="comparison_image.png" alt=""></p>
+				<img src="comparison_image.png" width="400"/>
 				<br/>
 				<a href="#hpluv" id="hpluv" style="color: inherit; text-decoration: none;">
 					<h3>HPLuv</h3>
@@ -115,7 +115,7 @@
 				<a href="#how-to-use" id="how-to-use" style="color: inherit; text-decoration: none;">
 					<h2>How to use</h2>
 				</a>
-				<pre><code>npm install --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> hsluv-ts</code></pre><pre><code class="language-typescript"><span class="hljs-keyword">import</span> { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } <span class="hljs-keyword">from</span> <span class="hljs-string">'hsluv-ts'</span>;
+				<pre><code>npm install --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> hsluv_ts</code></pre><pre><code class="language-typescript"><span class="hljs-keyword">import</span> { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } <span class="hljs-keyword">from</span> <span class="hljs-string">'hsluv_ts'</span>;
 
 <span class="hljs-built_in">console</span>.log( hsluv_to_hex([ <span class="hljs-number">250</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span> ]) );
 <span class="hljs-comment">// prints "#5c78a5"</span>
