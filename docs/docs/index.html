@@ -68,7 +68,8 @@
 					<h1>hsluv-ts</h1>
 				</a>
 				<p>An HSLuv implementation in typescript, ported from the <a href="https://github.com/hsluv/hsluv">definitive reference
-				Haxe version</a>.</p>
+						Haxe version</a>.  <a href="https://github.com/StoneCypher/hsluv-ts/blob/master/src/ts/hsluv.test.ts#L25">Math is accurate to within 1 in
+				10<sup>15</sup></a>.</p>
 				<p><a href="https://stonecypher.github.io/hsluv-ts/docs/">Library documentation</a></p>
 				<p><br/><br/></p>
 				<a href="#what-is-this" id="what-is-this" style="color: inherit; text-decoration: none;">
@@ -108,7 +109,7 @@
 				</a>
 				<pre><code>npm install --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> hsluv-ts</code></pre><pre><code class="language-typescript"><span class="hljs-keyword">import</span> { hsluv_to_rgb } <span class="hljs-keyword">from</span> <span class="hljs-string">'hsluv-ts'</span>;
 
-<span class="hljs-built_in">console</span>.log( hsluv_to_rgb() )</code></pre>
+<span class="hljs-built_in">console</span>.log( hsluv_to_hex( [<span class="hljs-number">333</span>, <span class="hljs-number">50</span>, <span class="hljs-number">95</span>] ) ); <span class="hljs-comment">// '#'</span></code></pre>
 				<p><br/><br/></p>
 				<a href="#changes" id="changes" style="color: inherit; text-decoration: none;">
 					<h2>Changes</h2>

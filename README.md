@@ -1,6 +1,7 @@
 # hsluv-ts
 An HSLuv implementation in typescript, ported from the [definitive reference
-Haxe version](https://github.com/hsluv/hsluv).
+Haxe version](https://github.com/hsluv/hsluv).  [Math is accurate to within 1 in
+10<sup>15</sup>](https://github.com/StoneCypher/hsluv-ts/blob/master/src/ts/hsluv.test.ts#L25).
 
 [Library documentation](https://stonecypher.github.io/hsluv-ts/docs/)
 
@@ -62,7 +63,7 @@ npm install --save-dev hsluv-ts
 ```typescript
 import { hsluv_to_rgb } from 'hsluv-ts';
 
-console.log( hsluv_to_rgb() )
+console.log( hsluv_to_hex( [333, 50, 95] ) ); // '#'
 ```
 
 

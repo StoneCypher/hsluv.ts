@@ -4,7 +4,7 @@
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.js",
   "scripts": {
-    "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts",
+    "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts && touch docs/docs/.nojekyll",
     "site": "cp ./README.md docs/ && cp ./comparison_image.png docs/",
     "clean": "rimraf -f dist/ && rimraf -f docs/",
     "rollup": "rollup -c",
