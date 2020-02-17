@@ -1,14 +1,15 @@
 {
   "name": "hsluv-ts",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.js",
   "scripts": {
-    "docs": "typedoc --out docs/docs src/ts",
+    "docs": "typedoc --out docs/docs --exclude src/ts/testdata.ts src/ts",
+    "site": "cp ./README.md docs/ && cp ./comparison_image.png docs/",
     "clean": "rimraf -f dist/ && rimraf -f docs/",
     "rollup": "rollup -c",
     "typescript": "tsc",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run docs",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run docs && npm run site",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/StoneCypher/hsluv-ts#readme",
   "devDependencies": {
+    "jest": "^25.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.31.1",
     "typedoc": "^0.16.10",
