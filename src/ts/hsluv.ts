@@ -47,7 +47,7 @@
  *
  **/
 
-import { line, angle } from './types';
+import { line, angle, color, hsl, hpl, xyz, rgb, lch, luv } from './types';
 
 import {
   distance_line_from_origin,
@@ -159,7 +159,7 @@ const max_safe_chroma_for_l = (L: number): number => {
 
 
 
-const max_chroma_for_lh = (L: number, H: number) => {
+const max_chroma_for_lh = (L: number, H: number): number => {
 
   const hrad   : number = H / 360 * Math.PI * 2,
         bounds : line[] = get_bounds(L);
@@ -216,7 +216,7 @@ const to_linear = (c: number): number =>
  *
  **/
 
-const xyz_to_rgb = (tuple: number[]): number[] =>
+const xyz_to_rgb = (tuple: xyz): rgb =>
 
   ([
     from_linear(dot_product(m[0], tuple)),
@@ -237,9 +237,9 @@ const xyz_to_rgb = (tuple: number[]): number[] =>
  *
  **/
 
-const rgb_to_xyz = (tuple: number[]): number[] => {
+const rgb_to_xyz = (tuple: rgb): xyz => {
 
-  const rgbl: number[] = [
+  const rgbl: rgb = [
     to_linear(tuple[0]),
     to_linear(tuple[1]),
     to_linear(tuple[2])
@@ -295,7 +295,7 @@ const l_to_y = (L: number): number =>
  *
  **/
 
-const xyz_to_luv = (tuple: number[]): number[] => {
+const xyz_to_luv = (tuple: xyz): luv => {
 
   const X: number = tuple[0],
         Y: number = tuple[1],
@@ -331,7 +331,7 @@ const xyz_to_luv = (tuple: number[]): number[] => {
  *
  **/
 
-const luv_to_xyz = (tuple: number[]): number[] => {
+const luv_to_xyz = (tuple: luv): xyz => {
 
   // TODO FIXME these could be pattern matches
   const L: number = tuple[0];
@@ -364,7 +364,7 @@ const luv_to_xyz = (tuple: number[]): number[] => {
  *
  **/
 
-const luv_to_lch = (tuple: number[]): number[] => {
+const luv_to_lch = (tuple: luv): lch => {
 
   const L: number = tuple[0];
   const U: number = tuple[1];
@@ -398,7 +398,7 @@ const luv_to_lch = (tuple: number[]): number[] => {
  *
  **/
 
-const lch_to_luv = (tuple: number[]): number[] => {
+const lch_to_luv = (tuple: lch): luv => {
 
   // TODO match
   const L: number = tuple[0];
@@ -426,7 +426,7 @@ const lch_to_luv = (tuple: number[]): number[] => {
  *
  **/
 
-const hsluv_to_lch = (tuple: number[]): number[] => {
+const hsluv_to_lch = (tuple: hsl): lch => {
 
   // TODO match
   const H: number = tuple[0];
@@ -457,7 +457,7 @@ const hsluv_to_lch = (tuple: number[]): number[] => {
  *
  **/
 
-const lch_to_hsluv = (tuple: number[]): number[] => {
+const lch_to_hsluv = (tuple: lch): hsl => {
 
   // TODO match
   const L: number = tuple[0];
@@ -488,7 +488,7 @@ const lch_to_hsluv = (tuple: number[]): number[] => {
  *
  **/
 
-const hpluv_to_lch = (tuple: number[]): number[] => {
+const hpluv_to_lch = (tuple: hpl): lch => {
 
   // TODO match
   const H: number = tuple[0];
@@ -518,7 +518,7 @@ const hpluv_to_lch = (tuple: number[]): number[] => {
  *
  **/
 
-const lch_to_hpluv = (tuple: number[]): number[] => {
+const lch_to_hpluv = (tuple: lch): hpl => {
 
   // TODO match
   const L: number = tuple[0];
@@ -549,7 +549,7 @@ const lch_to_hpluv = (tuple: number[]): number[] => {
  *
  **/
 
-const rgb_to_hex = (tuple: number[]): string => {
+const rgb_to_hex = (tuple: rgb): string => {
 
   let h: string = '#';
 
@@ -583,21 +583,19 @@ const rgb_to_hex = (tuple: number[]): string => {
  *
  **/
 
-const hex_to_rgb = (hex: string): number[] => {
+const hex_to_rgb = (uhex: string): rgb => {
 
-  // TODO remove all assignment to arguments 😒
-  hex = hex.toLowerCase();
+  const hex: string = uhex.toLowerCase();
 
-  // TODO this should be the result of the map, not pushed
-  const ret: number[] = [];
+  const ret: rgb = [0, 0, 0];
 
   [0,1,2].map(i => {
 
-    const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1));
-    const digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2));
-    const n = digit1 * 16 + digit2;
+    const digit1 = hexChars.indexOf(hex.charAt(i * 2 + 1)),
+          digit2 = hexChars.indexOf(hex.charAt(i * 2 + 2)),
+          n      = digit1 * 16 + digit2;
 
-    ret.push(n / 255.0);
+    ret[i] = (n / 255.0);
 
   });
 
@@ -618,7 +616,7 @@ const hex_to_rgb = (hex: string): number[] => {
  *
  **/
 
-const lch_to_rgb = (tuple: number[]): number[] =>
+const lch_to_rgb = (tuple: lch): rgb =>
 
   xyz_to_rgb(luv_to_xyz(lch_to_luv(tuple)));
 
@@ -635,7 +633,7 @@ const lch_to_rgb = (tuple: number[]): number[] =>
  *
  **/
 
-const rgb_to_lch = (tuple: number[]): number[] =>
+const rgb_to_lch = (tuple: rgb): lch =>
 
   luv_to_lch(xyz_to_luv(rgb_to_xyz(tuple)));
 
@@ -652,7 +650,7 @@ const rgb_to_lch = (tuple: number[]): number[] =>
  *
  **/
 
-const hsluv_to_rgb = (tuple: number[]): number[] =>
+const hsluv_to_rgb = (tuple: hsl): rgb =>
 
   lch_to_rgb(hsluv_to_lch(tuple));
 
@@ -669,7 +667,7 @@ const hsluv_to_rgb = (tuple: number[]): number[] =>
  *
  **/
 
-const rgb_to_hsluv = (tuple: number[]): number[] =>
+const rgb_to_hsluv = (tuple: rgb): hsl =>
 
   lch_to_hsluv(rgb_to_lch(tuple));
 
@@ -686,7 +684,7 @@ const rgb_to_hsluv = (tuple: number[]): number[] =>
  *
  **/
 
-const hpluv_to_rgb = (tuple: number[]): number[] =>
+const hpluv_to_rgb = (tuple: hpl): rgb =>
 
   lch_to_rgb(hpluv_to_lch(tuple));
 
@@ -703,7 +701,7 @@ const hpluv_to_rgb = (tuple: number[]): number[] =>
  *
  **/
 
-const rgb_to_hpluv = (tuple: number[]): number[] =>
+const rgb_to_hpluv = (tuple: rgb): hpl =>
 
   lch_to_hpluv(rgb_to_lch(tuple));
 
@@ -720,7 +718,7 @@ const rgb_to_hpluv = (tuple: number[]): number[] =>
  *
  **/
 
-const hsluv_to_hex = (tuple: number[]): string =>
+const hsluv_to_hex = (tuple: hsl): string =>
 
   rgb_to_hex(hsluv_to_rgb(tuple));
 
@@ -728,7 +726,7 @@ const hsluv_to_hex = (tuple: number[]): string =>
 
 
 
-const hpluv_to_hex = (tuple: number[]): string =>
+const hpluv_to_hex = (tuple: hpl): string =>
 
   rgb_to_hex(hpluv_to_rgb(tuple));
 
@@ -745,7 +743,7 @@ const hpluv_to_hex = (tuple: number[]): string =>
  *
  **/
 
-const hex_to_hsluv = (s: string): number[] =>
+const hex_to_hsluv = (s: string): hsl =>
 
   rgb_to_hsluv(hex_to_rgb(s));
 
@@ -762,7 +760,7 @@ const hex_to_hsluv = (s: string): number[] =>
  *
  **/
 
-const hex_to_hpluv = (s: string): number[] =>
+const hex_to_hpluv = (s: string): hpl =>
 
   rgb_to_hpluv(hex_to_rgb(s));
 
