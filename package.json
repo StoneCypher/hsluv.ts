@@ -1,6 +1,6 @@
 {
   "name": "hsluv_ts",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.bundle.cjs.js",
   "module": "dist/es6/hsluv.js",
@@ -9,9 +9,9 @@
     "site": "cp ./README.md docs/ && cp ./*.png docs/",
     "clean": "rimraf -f dist/ && rimraf -f docs/",
     "rollup": "rollup -c",
-    "terser": "terser",
+    "terser": "terser dist/es6/hsluv.bundle.iife.js --compress --mangle --output dist/es6/hsluv.bundle.iife.min.js",
     "typescript": "tsc",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run docs && npm run site",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run docs && npm run site",
     "test": "echo \"This can take 30+ seconds\" && jest --colors"
   },
   "repository": {

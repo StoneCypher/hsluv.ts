@@ -13,8 +13,8 @@ within 1 in 10<sup>15</sup>](https://github.com/StoneCypher/hsluv_ts/blob/master
 which [the author says is fine](https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374).
 
 This implementation provides `.d.ts` for Typescript, `es6` native tree-shakeable
-for most work, `es6` commonjs bundled for quick work, `es5 iife` for in-browser
-learning and debugging, and `es5 iife minified` for bandwidth-sensitive
+for most work, `es6` commonjs bundled for quick work, `es6 iife` for in-browser
+learning and debugging, and `es6 iife minified` for bandwidth-sensitive
 prepackaged deployment like CDNs.  `main` refers to `es6 cjs`, and `module`
 refers to `es6` native tree-shakeable.
 
