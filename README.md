@@ -61,10 +61,66 @@ npm install --save-dev hsluv-ts
 ```
 
 ```typescript
-import { hsluv_to_rgb } from 'hsluv-ts';
+import { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } from 'hsluv-ts';
 
-console.log( hsluv_to_hex( [333, 50, 95] ) ); // '#'
+console.log( hsluv_to_hex([ 250, 50, 50 ]) );
+// prints "#5c78a5"
+
+console.log( hsluv_to_rgb([ 250, 50, 50 ]) );
+// prints [ 0.35957778969721066, 0.4708793745621595, 0.6462180065016022 ]
+
+console.log( hex_to_hsluv('#5c78a5') );
+// prints [ 250.2650513570262, 49.70313649414815, 50.00687151772391 ]
 ```
+
+
+
+
+
+<br/><br/>
+
+## API
+
+The following functions are exposed.
+
+All functions take two arguments, according to the types in their names.
+
+* `rgb_to_hsluv`
+* `rgb_to_hpluv`
+* `hsluv_to_rgb`
+* `hpluv_to_rgb`
+* `hex_to_hsluv`
+* `hex_to_hpluv`
+* `hsluv_to_hex`
+* `hpluv_to_hex`
+* `lch_to_hsluv`
+* `lch_to_hpluv`
+* `hsluv_to_lch`
+* `hpluv_to_lch`
+* `rgb_to_xyz`
+* `xyz_to_rgb`
+* `rgb_to_lch`
+* `lch_to_rgb`
+* `luv_to_xyz`
+* `xyz_to_luv`
+* `luv_to_lch`
+* `lch_to_luv`
+* `l_to_y`
+* `y_to_l`
+* `hex_to_rgb`
+
+
+
+<br/>
+
+### API Types
+
+* `l` and `y` are `number`s.
+* `hex` is a seven-character `string` starting with `#`.
+    * The library consumes upper and lower case, but produces lower case.
+* `hsl` and `hpl` are a tuple (array) of range `[0;360]`, `[0;100]`, `[0;100]`
+* `rgb` is a tuple of range `[0;1]`, `[0;1]`, `[0;1]`
+* `xyz`, `lch`, and `luv` are a tuple of three unbounded signed `number`s
 
 
 
@@ -74,4 +130,4 @@ console.log( hsluv_to_hex( [333, 50, 95] ) ); // '#'
 
 ## Changes
 
-Names are now in `snake_case` instead of `camelCase`.  Every
+Names are now in `snake_case` instead of `camelCase`.
