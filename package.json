@@ -1,5 +1,5 @@
 {
-  "name": "hsluv_ts",
+  "name": "@stonecypher/hsluv.ts",
   "version": "0.10.0",
   "description": "A reimplementation of hsluv in typescript",
   "main": "dist/es6/hsluv.bundle.cjs.js",
@@ -13,12 +13,12 @@
     "terser": "terser dist/es6/hsluv.bundle.iife.js --compress --mangle --output dist/es6/hsluv.bundle.iife.min.js",
     "typescript": "tsc",
     "badges": "node src/build_js/make_badges.js",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run badges && npm run docs && npm run site",
+    "build": "npm run clean && npm run typescript && npm run test && npm run rollup && npm run terser && npm run badges && npm run docs && npm run site",
     "test": "echo \"This can take 30+ seconds\" && jest --colors --json --outputFile=coverage/jest.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StoneCypher/hsluv_ts.git"
+    "url": "git+https://github.com/StoneCypher/hsluv.ts.git"
   },
   "keywords": [
     "hsl",
@@ -29,9 +29,9 @@
   "author": "John Haugeland <stonecypher@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StoneCypher/hsluv_ts/issues"
+    "url": "https://github.com/StoneCypher/hsluv.ts/issues"
   },
-  "homepage": "https://github.com/StoneCypher/hsluv_ts#readme",
+  "homepage": "https://github.com/StoneCypher/hsluv.ts#readme",
   "devDependencies": {
     "@types/jest": "^25.1.2",
     "highlight.js": "^9.18.1",

@@ -19,10 +19,6 @@
       a, a:visited { color: #06f; text-decoration: none; }
       a:hover      { color: #00f; text-decoration: underline; }
 
-      pre {
-        font-family: Inconsolata, monospace;
-      }
-
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Alegreya', "helvetica neue", "helvetica", sans-serif;
         font-weight: 800;
@@ -41,21 +37,24 @@
 
       li, p { font-family: Raleway, "Times New Roman", "Times", serif; }
 
-      pre.hljs { border: 1px solid #ddd; padding: 1em; }
+      code { background-color: #fafafa; }
+      pre, code { border: 1px solid #ddd; font-family: Inconsolata, monospace; }
+      pre code  { border: 0 solid transparent; }
+      pre.hljs { padding: 1em; }
 
     </style>
 
   </head>
 
-  <body><h1>hsluv_ts</h1>
+  <body><h1>@stonecypher/hsluv.ts</h1>
 <div id="intro">
 <p>An HSLuv implementation in typescript, ported from the <a href="https://github.com/hsluv/hsluv">definitive reference
 Haxe version</a>.</p>
 <p>MIT licensed.</p>
-<p><img src="badges/version.svg"/> <a href="https://github.com/StoneCypher/hsluv_ts/actions"><img src="https://github.com/StoneCypher/hsluv_ts/workflows/Node.js%20CI/badge.svg" alt="Actions Status"></a></p>
+<p><img src="badges/version.svg"/> <a href="https://github.com/StoneCypher/hsluv.ts/actions"><img src="https://github.com/StoneCypher/hsluv.ts/workflows/Node.js%20CI/badge.svg" alt="Actions Status"></a></p>
 <p><img src="badges/jest-tests.svg"/> <img src="badges/jest-suites.svg"/> <img src="badges/jest-coverage.svg"/></p>
-<p>➡️ <a href="https://stonecypher.github.io/hsluv_ts/">Site</a></p>
-<p>➡️ <a href="https://stonecypher.github.io/hsluv_ts/docs/">Generated library documentation</a></p>
+<p>➡️ <a href="https://stonecypher.github.io/hsluv.ts/">Site</a></p>
+<p>➡️ <a href="https://stonecypher.github.io/hsluv.ts/docs/">Generated library documentation</a></p>
 </div>
 <p><br/><br/></p>
 <h2>What is this?</h2>
@@ -85,9 +84,9 @@ no blue with the apparent brightness of canary yellow.</p>
 always produce a color, but sometimes a less satisfying one than <code>HSLuv</code>.</p>
 <p><br/><br/></p>
 <h2>How to use</h2>
-<pre class="hljs"><code>npm install --save-dev hsluv_ts
+<pre class="hljs"><code>npm install --save-dev @stonecypher/hsluv.ts
 </code></pre>
-<pre class="hljs"><code><span class="hljs-keyword">import</span> { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } <span class="hljs-keyword">from</span> <span class="hljs-string">'hsluv_ts'</span>;
+<pre class="hljs"><code><span class="hljs-keyword">import</span> { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } <span class="hljs-keyword">from</span> <span class="hljs-string">'@stonecypher/hsluv.ts'</span>;
 
 <span class="hljs-built_in">console</span>.log( hsluv_to_hex([ <span class="hljs-number">250</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span> ]) );
 <span class="hljs-comment">// prints "#5c78a5"</span>
@@ -100,7 +99,7 @@ always produce a color, but sometimes a less satisfying one than <code>HSLuv</co
 </code></pre>
 <p><br/><br/></p>
 <h2>API</h2>
-<p><a href="https://stonecypher.github.io/hsluv_ts/docs/modules/_hsluv_.html">The following functions are exposed</a>.</p>
+<p><a href="https://stonecypher.github.io/hsluv.ts/docs/modules/_hsluv_.html">The following functions are exposed</a>.</p>
 <p>All functions take two arguments, according to the types in their names.</p>
 <ul>
 <li><code>rgb_to_hsluv</code></li>
@@ -151,10 +150,10 @@ refers to <code>es6</code> native tree-shakeable.</p>
 <h2>Quality</h2>
 <p>This implementation passed <a href="https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json">the author's 24,000
 tests</a>.
-By comparison to the reference implementation, <a href="https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25">calculations are accurate to
+By comparison to the reference implementation, <a href="https://github.com/StoneCypher/hsluv.ts/blob/master/src/ts/hsluv.test.ts#L25">calculations are accurate to
 within 1 in 10<sup>15</sup></a>,
 which <a href="https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374">the author says is fine</a>.</p>
-<p>This implementation is <a href="https://github.com/StoneCypher/hsluv_ts/actions">CI tested</a>
+<p>This implementation is <a href="https://github.com/StoneCypher/hsluv.ts/actions">CI tested</a>
 under Node 8,12,13 on Windows, Mac, and Ubuntu.</p>
 <p><br/><br/></p>
 <h2>Changes</h2>

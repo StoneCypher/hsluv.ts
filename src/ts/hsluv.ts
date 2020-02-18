@@ -3,7 +3,6 @@
 // Generally the same code, but some names changed, and the packaging replaced
 // s/haxe/typescript/g
 
-// TODO a lot of these `number[]`s can be replaced with `xyz` or `hsl` or etc
 // TODO update all doc text to typescript, markdown
 // TODO == to ===
 // TODO code simplification passes
@@ -17,9 +16,9 @@
 
 /*********
  *
- *  # hsluv.ts
+ * # @stonecypher/hsluv.ts
  *
- *  `Human-friendly HSL` conversion utility class
+ * A `Human-friendly HSL` conversion utility class
  *
  * A typescript conversion of https://github.com/hsluv/hsluv/
  *
@@ -338,10 +337,7 @@ const luv_to_xyz = (tuple: luv): xyz => {
   const U: number = tuple[1];
   const V: number = tuple[2];
 
-  // TODO FIXME there's no reason for this to wait until after the other two assignments
-  if (L == 0) {
-      return [0, 0, 0];
-  }
+  if (L === 0) { return [0, 0, 0]; }
 
   const varU: number = U / (13 * L) + refU;
   const varV: number = V / (13 * L) + refV;

@@ -1,4 +1,4 @@
-# hsluv_ts
+# @stonecypher/hsluv.ts
 
 <div id="intro">
 
@@ -7,13 +7,13 @@ Haxe version](https://github.com/hsluv/hsluv).
 
 MIT licensed.
 
-<img src="badges/version.svg"/> [![Actions Status](https://github.com/StoneCypher/hsluv_ts/workflows/Node.js%20CI/badge.svg)](https://github.com/StoneCypher/hsluv_ts/actions)
+<img src="badges/version.svg"/> [![Actions Status](https://github.com/StoneCypher/hsluv.ts/workflows/Node.js%20CI/badge.svg)](https://github.com/StoneCypher/hsluv.ts/actions)
 
 <img src="badges/jest-tests.svg"/> <img src="badges/jest-suites.svg"/> <img src="badges/jest-coverage.svg"/>
 
-➡️ [Site](https://stonecypher.github.io/hsluv_ts/)
+➡️ [Site](https://stonecypher.github.io/hsluv.ts/)
 
-➡️ [Generated library documentation](https://stonecypher.github.io/hsluv_ts/docs/)
+➡️ [Generated library documentation](https://stonecypher.github.io/hsluv.ts/docs/)
 
 </div>
 
@@ -77,11 +77,11 @@ always produce a color, but sometimes a less satisfying one than `HSLuv`.
 ## How to use
 
 ```
-npm install --save-dev hsluv_ts
+npm install --save-dev @stonecypher/hsluv.ts
 ```
 
 ```typescript
-import { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } from 'hsluv_ts';
+import { hsluv_to_hex, hsluv_to_rgb, hex_to_hsluv } from '@stonecypher/hsluv.ts';
 
 console.log( hsluv_to_hex([ 250, 50, 50 ]) );
 // prints "#5c78a5"
@@ -101,7 +101,7 @@ console.log( hex_to_hsluv('#5c78a5') );
 
 ## API
 
-[The following functions are exposed](https://stonecypher.github.io/hsluv_ts/docs/modules/_hsluv_.html).
+[The following functions are exposed](https://stonecypher.github.io/hsluv.ts/docs/modules/_hsluv_.html).
 
 All functions take two arguments, according to the types in their names.
 
@@ -167,10 +167,10 @@ refers to `es6` native tree-shakeable.
 This implementation passed [the author's 24,000
 tests](https://github.com/hsluv/hsluv/blob/master/snapshots/snapshot-rev4.json).
 By comparison to the reference implementation, [calculations are accurate to
-within 1 in 10<sup>15</sup>](https://github.com/StoneCypher/hsluv_ts/blob/master/src/ts/hsluv.test.ts#L25),
+within 1 in 10<sup>15</sup>](https://github.com/StoneCypher/hsluv.ts/blob/master/src/ts/hsluv.test.ts#L25),
 which [the author says is fine](https://github.com/hsluv/hsluv/issues/58#issuecomment-586946374).
 
-This implementation is [CI tested](https://github.com/StoneCypher/hsluv_ts/actions)
+This implementation is [CI tested](https://github.com/StoneCypher/hsluv.ts/actions)
 under Node 8,12,13 on Windows, Mac, and Ubuntu.
 
 

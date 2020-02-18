@@ -19,10 +19,6 @@
       a, a:visited { color: #06f; text-decoration: none; }
       a:hover      { color: #00f; text-decoration: underline; }
 
-      pre {
-        font-family: Inconsolata, monospace;
-      }
-
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Alegreya', "helvetica neue", "helvetica", sans-serif;
         font-weight: 800;
@@ -41,7 +37,10 @@
 
       li, p { font-family: Raleway, "Times New Roman", "Times", serif; }
 
-      pre.hljs { border: 1px solid #ddd; padding: 1em; }
+      code { background-color: #fafafa; }
+      pre, code { border: 1px solid #ddd; font-family: Inconsolata, monospace; }
+      pre code  { border: 0 solid transparent; }
+      pre.hljs { padding: 1em; }
 
     </style>
 
